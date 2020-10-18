@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:local_auth/local_auth.dart'; // แสกนนิ้ว
-// import 'package:shared_preferences/shared_preferences.dart'; 
+import 'package:local_auth/local_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // แสกนนิ้ว
+// import 'package:shared_preferences/shared_preferences.dart';
 
 class Numpad extends StatefulWidget {
   final int length;
@@ -13,14 +14,13 @@ class Numpad extends StatefulWidget {
 }
 
 class _NumpadState extends State<Numpad> {
-
   bool _authSuccess = false;
   LocalAuthentication _localAuth;
 
   String number = '';
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     this._localAuth = LocalAuthentication();
   }
@@ -42,13 +42,13 @@ class _NumpadState extends State<Numpad> {
     // FlutterFragmentActivity, cf. https://stackoverflow.com/a/56605771.
     try {
       final authSuccess = await this._localAuth.authenticateWithBiometrics(
-          localizedReason: 'เข้าใช้งานด้วยการแสกนลายนิ้วมือ\nหรือ ยกเลิกเพื่อกลับไปใช้รหัส PIN'
-      );
+          localizedReason:
+              'เข้าใช้งานด้วยการแสกนลายนิ้วมือ\nหรือ ยกเลิกเพื่อกลับไปใช้รหัส PIN');
 
-      if(authSuccess){
+      if (authSuccess) {
         _setAuthSuccess();
       }
-      
+
       /*
       Scaffold.of(context).showSnackBar(
         SnackBar(content: Text('authSuccess=$authSuccess')),
@@ -65,38 +65,36 @@ class _NumpadState extends State<Numpad> {
   }
 
   void _setAuthSuccess() async {
-
     // สร้างตัวเก็บข้อมูลแบบ SharedPreferences
-    // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    // sharedPreferences.setInt('storeStep', 3);
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setInt('appStep', 2);
     Navigator.pushReplacementNamed(context, '/dashboard');
-
   }
 
-  setValue(String val){
-
-    if(number.length  < widget.length){
+  setValue(String val) async {
+    if (number.length < widget.length) {
       setState(() {
         number += val;
         // widget.onChange(number);
       });
     }
 
-    if(number.length == widget.length){
-      if(number == '123456'){
+    if (number.length == widget.length) {
+      if (number == '123456') {
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        sharedPreferences.setInt('appStep', 2);
         Navigator.pushReplacementNamed(context, '/dashboard');
-      }else{ 
+      } else {
         number = '';
       }
     }
-    
-
   }
 
-  backspace(String text){
-    if(text.length > 0){
+  backspace(String text) {
+    if (text.length > 0) {
       setState(() {
-        number = text.split('').sublist(0,text.length-1).join('');
+        number = text.split('').sublist(0, text.length - 1).join('');
         // widget.onChange(number);
       });
     }
@@ -106,7 +104,7 @@ class _NumpadState extends State<Numpad> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 30.0),
-      child: Column( 
+      child: Column(
         children: <Widget>[
           Preview(text: number, length: widget.length),
           Row(
@@ -114,15 +112,15 @@ class _NumpadState extends State<Numpad> {
             children: <Widget>[
               NumpadButton(
                 text: '1',
-                onPressed: ()=>setValue('1'),
+                onPressed: () => setValue('1'),
               ),
               NumpadButton(
                 text: '2',
-                onPressed: ()=>setValue('2'),
+                onPressed: () => setValue('2'),
               ),
               NumpadButton(
                 text: '3',
-                onPressed: ()=>setValue('3'),
+                onPressed: () => setValue('3'),
               ),
             ],
           ),
@@ -131,15 +129,15 @@ class _NumpadState extends State<Numpad> {
             children: <Widget>[
               NumpadButton(
                 text: '4',
-                onPressed: ()=>setValue('4'),
+                onPressed: () => setValue('4'),
               ),
               NumpadButton(
                 text: '5',
-                onPressed: ()=>setValue('5'),
+                onPressed: () => setValue('5'),
               ),
               NumpadButton(
                 text: '6',
-                onPressed: ()=>setValue('6'),
+                onPressed: () => setValue('6'),
               ),
             ],
           ),
@@ -148,15 +146,15 @@ class _NumpadState extends State<Numpad> {
             children: <Widget>[
               NumpadButton(
                 text: '7',
-                onPressed: ()=>setValue('7'),
+                onPressed: () => setValue('7'),
               ),
               NumpadButton(
                 text: '8',
-                onPressed: ()=>setValue('8'),
+                onPressed: () => setValue('8'),
               ),
               NumpadButton(
                 text: '9',
-                onPressed: ()=>setValue('9'),
+                onPressed: () => setValue('9'),
               ),
             ],
           ),
@@ -173,12 +171,12 @@ class _NumpadState extends State<Numpad> {
               ),
               NumpadButton(
                 text: '0',
-                onPressed: ()=>setValue('0'),
+                onPressed: () => setValue('0'),
               ),
               NumpadButton(
                 haveBorder: false,
                 icon: Icons.backspace,
-                onPressed: ()=>backspace(number),
+                onPressed: () => backspace(number),
               ),
             ],
           )
@@ -197,14 +195,11 @@ class Preview extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> previewLength = [];
     for (var i = 0; i < length; i++) {
-      previewLength.add(Dot(isActive: text.length >= i+1));
+      previewLength.add(Dot(isActive: text.length >= i + 1));
     }
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10.0),
-      child: Wrap(
-        children: previewLength
-      )
-    );
+        padding: EdgeInsets.symmetric(vertical: 10.0),
+        child: Wrap(children: previewLength));
   }
 }
 
@@ -221,10 +216,7 @@ class Dot extends StatelessWidget {
         height: 15.0,
         decoration: BoxDecoration(
           color: isActive ? Theme.of(context).primaryColor : Colors.transparent,
-          border: Border.all(
-            width: 1.0,
-            color: Theme.of(context).primaryColor
-          ),
+          border: Border.all(width: 1.0, color: Theme.of(context).primaryColor),
           borderRadius: BorderRadius.circular(15.0),
         ),
       ),
@@ -237,22 +229,32 @@ class NumpadButton extends StatelessWidget {
   final IconData icon;
   final bool haveBorder;
   final Function onPressed;
-  const NumpadButton({Key key, this.text, this.icon, this.haveBorder=true, this.onPressed}) : super(key: key);
+  const NumpadButton(
+      {Key key, this.text, this.icon, this.haveBorder = true, this.onPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    TextStyle buttonStyle = TextStyle(fontSize:30.0, color: Colors.black);
-    Widget label = icon != null ? Icon(icon, color: Theme.of(context).primaryColor.withOpacity(0.8), size: 40.0,)
-      : Text(this.text ?? '', style: buttonStyle);
-      
+    TextStyle buttonStyle = TextStyle(fontSize: 30.0, color: Colors.black);
+    Widget label = icon != null
+        ? Icon(
+            icon,
+            color: Theme.of(context).primaryColor.withOpacity(0.8),
+            size: 40.0,
+          )
+        : Text(this.text ?? '', style: buttonStyle);
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: OutlineButton(
-        borderSide: haveBorder ? BorderSide(
-          color: Colors.grey[400]
-        ) : BorderSide.none ,
-        highlightedBorderColor: icon!=null ? Colors.transparent : Theme.of(context).primaryColor.withOpacity(0.3),
-        splashColor: icon!=null ? Colors.transparent : Theme.of(context).primaryColor.withOpacity(0.1),
+        borderSide:
+            haveBorder ? BorderSide(color: Colors.grey[400]) : BorderSide.none,
+        highlightedBorderColor: icon != null
+            ? Colors.transparent
+            : Theme.of(context).primaryColor.withOpacity(0.3),
+        splashColor: icon != null
+            ? Colors.transparent
+            : Theme.of(context).primaryColor.withOpacity(0.1),
         padding: EdgeInsets.all(12.0),
         shape: CircleBorder(),
         onPressed: onPressed,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomeScreen extends StatefulWidget {
   WelcomeScreen({Key key}) : super(key: key);
@@ -9,25 +10,31 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  // SharedPreferences sharedPreferences;
 
   final introKey = GlobalKey<_WelcomeScreenState>();
 
-  void _onIntroEnd(context){
+  void _onIntroEnd(context) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setInt('appStep', 1);
+
     // เมื่อทำการเรียกไปหน้าสุด
     // ส่งไปหน้า dashboard
     Navigator.pushReplacementNamed(context, '/login');
   }
 
-  Widget _buildImage(String assetName){
+  Widget _buildImage(String assetName) {
     return Align(
-      child: Image.asset('assets/images/welcome/$assetName.jpg', width: 350,),
+      child: Image.asset(
+        'assets/images/welcome/$assetName.jpg',
+        width: 350,
+      ),
       alignment: Alignment.bottomCenter,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-
     const bodyStyle = TextStyle(fontSize: 19.0);
     const pageDecoration = const PageDecoration(
       titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
@@ -88,7 +95,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       nextFlex: 0,
       skip: const Text('ข้าม'),
       next: const Icon(Icons.arrow_forward),
-      done: const Text('เข้าใช้งาน', style: TextStyle(fontWeight: FontWeight.w600)),
+      done: const Text('เข้าใช้งาน',
+          style: TextStyle(fontWeight: FontWeight.w600)),
       dotsDecorator: const DotsDecorator(
         size: Size(10.0, 10.0),
         color: Color(0xFFBDBDBD),
@@ -98,6 +106,5 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         ),
       ),
     );
-    
   }
 }
