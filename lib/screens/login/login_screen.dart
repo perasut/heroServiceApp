@@ -135,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Fluttertoast.showToast(
           msg: "มีข้อผิดพลาดการโหลดข้อมูล",
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.red,
           textColor: Colors.white,
