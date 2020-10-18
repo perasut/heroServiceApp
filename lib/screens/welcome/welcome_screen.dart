@@ -15,7 +15,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void _onIntroEnd(context){
     // เมื่อทำการเรียกไปหน้าสุด
     // ส่งไปหน้า dashboard
-    Navigator.pushReplacementNamed(context, '/dashboard');
+    Navigator.pushReplacementNamed(context, '/login');
   }
 
   Widget _buildImage(String assetName){
