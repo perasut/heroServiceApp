@@ -113,7 +113,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Icon(Icons.notifications,size: 30,color: Colors.white,),
             Icon(Icons.menu,size: 30,color: Colors.white,),
           ],
-          onTap: onTabTapped,),
+          onTap: onTabTapped,),  
       body: _children[_currentIndex],
     );
   }

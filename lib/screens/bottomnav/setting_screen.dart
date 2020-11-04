@@ -56,7 +56,6 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getProfile();
     checkNetwork();
@@ -81,11 +80,13 @@ class _SettingScreenState extends State<SettingScreen> {
                   child: CircleAvatar(
                     radius: 50,
                     backgroundColor: Colors.white,
-                    child: _avatar != null ?  CircleAvatar(
-                      radius: 46.0,
-                      // backgroundImage: AssetImage('assets/images/a1.jpg'),
-                      backgroundImage: NetworkImage('$_avatar'),
-                    ): CircularProgressIndicator(),
+                    child: _avatar != null
+                        ? CircleAvatar(
+                            radius: 46.0,
+                            // backgroundImage: AssetImage('assets/images/a1.jpg'),
+                            backgroundImage: NetworkImage('$_avatar'),
+                          )
+                        : CircularProgressIndicator(),
                   ),
                 ),
                 SizedBox(
@@ -110,7 +111,9 @@ class _SettingScreenState extends State<SettingScreen> {
           ListTile(
             leading: Icon(Icons.person),
             title: Text('ข้อมูลผู้ใช้'),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/userprofile');
+            },
           ),
           ListTile(
             leading: Icon(Icons.lock),

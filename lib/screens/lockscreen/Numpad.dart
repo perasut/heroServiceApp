@@ -25,8 +25,9 @@ class _NumpadState extends State<Numpad> {
     this._localAuth = LocalAuthentication();
   }
 
-  /** ฟังก์ชันการสแกนนิ้ว */
+  //  ฟังก์ชันการสแกนนิ้ว 
   Future<bool> _auth() async {
+    
     setState(() => this._authSuccess = false);
     if (await this._localAuth.canCheckBiometrics == false) {
       Scaffold.of(context).showSnackBar(
