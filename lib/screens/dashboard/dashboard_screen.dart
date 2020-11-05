@@ -16,6 +16,8 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int _currentIndex = 2;
   String _title = 'Hero Service';
+  Widget _actionWidget;
+
   final List<Widget> _children = [
     MarketScreen(),
     BookingScreen(),
@@ -23,6 +25,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
     NotificationScreen(),
     SettingScreen(),
   ];
+
+  Widget _homeActionBar() {
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, '/qrcode');
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(right: 15.0),
+        child: Row(
+          children: [Icon(Icons.center_focus_strong), Text('Scan')],
+        ),
+      ),
+    );
+  }
+
+  Widget _marketActionBar() {
+    return InkWell(
+      onTap: () {},
+      child: Padding(
+        padding: const EdgeInsets.only(right: 15.0),
+        child: Row(
+          children: [Icon(Icons.add), Text('Add News')],
+        ),
+      ),
+    );
+  }
+
   // สร้างฟังก์ชันเพื่อใช้ในการเปลี่ยนหน้า
   void onTabTapped(int index) {
     setState(() {
@@ -32,28 +61,41 @@ class _DashboardScreenState extends State<DashboardScreen> {
       switch (index) {
         case 0:
           _title = 'ตลาด';
+          _actionWidget = _marketActionBar();
+          ;
           break;
         case 1:
           _title = 'รายจอง';
+          _actionWidget = Container();
           break;
         case 2:
           _title = 'บริการ';
+          _actionWidget = _homeActionBar();
           break;
         case 3:
           _title = 'แจ้งเตือน';
+          _actionWidget = Container();
           break;
         case 4:
           _title = 'อื่นๆ';
+          _actionWidget = Container();
           break;
       }
     });
   }
 
   @override
+  void initState() {
+    super.initState();
+    _actionWidget = _homeActionBar();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('$_title')),
+        title: Text('$_title'),
+        actions: [_actionWidget],
       ),
       // bottomNavigationBar: BottomNavigationBar(
       //     onTap: onTabTapped,
@@ -99,21 +141,42 @@ class _DashboardScreenState extends State<DashboardScreen> {
       //           )),
       //     ]),
       bottomNavigationBar: CurvedNavigationBar(
-          backgroundColor: Colors.white,
-          color: Colors.teal,
-          buttonBackgroundColor: Colors.teal,
-          height: 60,
-          animationDuration: Duration(milliseconds: 200),
-          index: 2,
-          animationCurve: Curves.bounceInOut,
-          items: [
-            Icon(Icons.shopping_basket,size: 30,color: Colors.white,),
-            Icon(Icons.library_books,size: 30,color: Colors.white,),
-            Icon(Icons.business_center,size:  30,color: Colors.white,),
-            Icon(Icons.notifications,size: 30,color: Colors.white,),
-            Icon(Icons.menu,size: 30,color: Colors.white,),
-          ],
-          onTap: onTabTapped,),  
+        backgroundColor: Colors.white,
+        color: Colors.teal,
+        buttonBackgroundColor: Colors.teal,
+        height: 60,
+        animationDuration: Duration(milliseconds: 200),
+        index: 2,
+        animationCurve: Curves.bounceInOut,
+        items: [
+          Icon(
+            Icons.shopping_basket,
+            size: 30,
+            color: Colors.white,
+          ),
+          Icon(
+            Icons.library_books,
+            size: 30,
+            color: Colors.white,
+          ),
+          Icon(
+            Icons.business_center,
+            size: 30,
+            color: Colors.white,
+          ),
+          Icon(
+            Icons.notifications,
+            size: 30,
+            color: Colors.white,
+          ),
+          Icon(
+            Icons.menu,
+            size: 30,
+            color: Colors.white,
+          ),
+        ],
+        onTap: onTabTapped,
+      ),
       body: _children[_currentIndex],
     );
   }
