@@ -62,7 +62,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         case 0:
           _title = 'ตลาด';
           _actionWidget = _marketActionBar();
-          ;
           break;
         case 1:
           _title = 'รายจอง';
